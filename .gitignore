@@ -42,6 +42,10 @@ ENV/
 
 # Local settings
 .claude/settings.local.json
+.claude/skills/
+
+# BMad Method local tooling
+_bmad/
 
 # OS
 .DS_Store
