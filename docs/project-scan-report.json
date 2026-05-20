@@ -1,0 +1,63 @@
+{
+  "workflow_version": "1.2.0",
+  "timestamps": {
+    "started": "2026-05-20T13:32:01+09:30",
+    "last_updated": "2026-05-20T13:55:00+09:30"
+  },
+  "mode": "initial_scan",
+  "scan_level": "deep",
+  "project_root": "/home/bsprigg/Projects/Data3/power-platform-skills",
+  "project_knowledge": "/home/bsprigg/Projects/Data3/power-platform-skills/docs",
+  "current_step": "step_11",
+  "repository_type": "monorepo",
+  "project_parts": [
+    { "part_id": "power-pages", "root_path": "plugins/power-pages", "project_type_id": "library", "display_name": "Power Pages", "version": "1.3.0" },
+    { "part_id": "model-apps", "root_path": "plugins/model-apps", "project_type_id": "library", "display_name": "Model Apps", "version": "1.0.6" },
+    { "part_id": "mcp-apps", "root_path": "plugins/mcp-apps", "project_type_id": "library", "display_name": "MCP Apps", "version": "1.0.0" },
+    { "part_id": "canvas-apps", "root_path": "plugins/canvas-apps", "project_type_id": "library", "display_name": "Canvas Apps", "version": "2.1.0" },
+    { "part_id": "code-apps-preview", "root_path": "plugins/code-apps", "project_type_id": "library", "display_name": "Code Apps (preview)", "version": "1.0.0" }
+  ],
+  "project_types": [
+    { "part_id": "power-pages", "project_type_id": "library" },
+    { "part_id": "model-apps", "project_type_id": "library" },
+    { "part_id": "mcp-apps", "project_type_id": "library" },
+    { "part_id": "canvas-apps", "project_type_id": "library" },
+    { "part_id": "code-apps-preview", "project_type_id": "library" }
+  ],
+  "findings": {
+    "project_classification": "monorepo, 5 active plugin parts + 1 proposal (power-automate). Markdown SKILL.md + Node.js scripts. node --test only.",
+    "tech_stack_summary": "Markdown workflows + Node.js scripts; MCP servers per plugin (playwright, microsoft-learn, canvas-authoring); pac/az/dotnet/node external CLIs.",
+    "incomplete_docs_list": []
+  },
+  "completed_steps": [
+    { "step": "step_1", "status": "completed", "timestamp": "2026-05-20T13:34:00+09:30", "summary": "Classified as monorepo with 5 active library plugin parts" },
+    { "step": "step_2", "status": "completed", "timestamp": "2026-05-20T13:36:00+09:30", "summary": "Inventoried existing docs: 4 root + 4 plugin AGENTS/CLAUDE + 24 references + 4 CI workflows + 13 evals" },
+    { "step": "step_3", "status": "completed", "timestamp": "2026-05-20T13:38:00+09:30", "summary": "Tech stack: Markdown + Node.js; per-plugin MCP servers + downstream stacks documented" },
+    { "step": "step_4", "status": "completed", "timestamp": "2026-05-20T13:42:00+09:30", "summary": "Deep scan: read root AGENTS.md, PLUGIN_DEVELOPMENT_GUIDE.md, all 5 plugin AGENTS.md, install.js, hooks dispatcher, MCP configs" },
+    { "step": "step_5", "status": "completed", "timestamp": "2026-05-20T13:45:00+09:30", "summary": "Wrote source-tree-analysis.md (15KB)" },
+    { "step": "step_6", "status": "completed", "timestamp": "2026-05-20T13:48:00+09:30", "summary": "Wrote development-guide.md, deployment-guide.md, contribution-guide.md" },
+    { "step": "step_7", "status": "completed", "timestamp": "2026-05-20T13:50:00+09:30", "summary": "Wrote integration-architecture.md + project-parts.json" },
+    { "step": "step_8", "status": "completed", "timestamp": "2026-05-20T13:52:00+09:30", "summary": "Wrote 5 per-plugin architecture docs (power-pages, model-apps, mcp-apps, canvas-apps, code-apps-preview)" },
+    { "step": "step_9", "status": "completed", "timestamp": "2026-05-20T13:53:30+09:30", "summary": "Wrote project-overview.md + component-inventory.md" },
+    { "step": "step_10", "status": "completed", "timestamp": "2026-05-20T13:54:30+09:30", "summary": "Wrote master index.md" },
+    { "step": "step_11", "status": "completed", "timestamp": "2026-05-20T13:55:00+09:30", "summary": "Validation: 13 docs generated, zero incomplete markers, 2049 total lines" }
+  ],
+  "outputs_generated": [
+    "project-scan-report.json",
+    "source-tree-analysis.md",
+    "development-guide.md",
+    "deployment-guide.md",
+    "contribution-guide.md",
+    "integration-architecture.md",
+    "project-parts.json",
+    "architecture-power-pages.md",
+    "architecture-model-apps.md",
+    "architecture-mcp-apps.md",
+    "architecture-canvas-apps.md",
+    "architecture-code-apps-preview.md",
+    "project-overview.md",
+    "component-inventory.md",
+    "index.md"
+  ],
+  "resume_instructions": "All steps complete. Workflow finalized."
+}

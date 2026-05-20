@@ -1,0 +1,135 @@
+{
+  "repository_type": "monorepo",
+  "marketplace_manifest": ".claude-plugin/marketplace.json",
+  "parts": [
+    {
+      "part_id": "power-pages",
+      "marketplace_name": "power-pages",
+      "source_dir": "plugins/power-pages",
+      "version": "1.3.0",
+      "project_type": "library",
+      "description": "Create and deploy Power Pages code sites (SPA frameworks: React, Vue, Angular, Astro). Dataverse + Web API integration, table permissions, server logic, cloud flows, SEO, auth.",
+      "skills": [
+        "activate-site", "add-cloud-flow", "add-sample-data", "add-seo", "add-server-logic",
+        "audit-permissions", "create-site", "create-webroles", "deploy-site",
+        "integrate-backend", "integrate-webapi", "setup-auth", "setup-datamodel", "test-site",
+        "report-issue"
+      ],
+      "agents": [
+        "data-model-architect", "table-permissions-architect", "webapi-integration", "webapi-settings-architect"
+      ],
+      "mcp_servers": ["playwright", "microsoft-learn"],
+      "hooks": "PostToolUse:Skill → run-skill-posttool-validation.js (dispatcher)",
+      "downstream_target": "Power Pages site (deployed via `pac pages upload-code-site`)",
+      "auth": "az login → getAuthToken from scripts/lib/validation-helpers.js"
+    },
+    {
+      "part_id": "model-apps",
+      "marketplace_name": "model-apps",
+      "source_dir": "plugins/model-apps",
+      "version": "1.0.6",
+      "project_type": "library",
+      "description": "Build and deploy Power Apps generative pages (genux) for model-driven apps. React 17 + TypeScript + Fluent UI v9 single-file components.",
+      "skills": ["genpage", "report-issue"],
+      "agents": [],
+      "mcp_servers": ["playwright"],
+      "hooks": "(none)",
+      "downstream_target": "Model-driven Power App (deployed via `pac model genpage`)",
+      "auth": "pac auth"
+    },
+    {
+      "part_id": "mcp-apps",
+      "marketplace_name": "mcp-apps",
+      "source_dir": "plugins/mcp-apps",
+      "version": "1.0.0",
+      "project_type": "library",
+      "description": "Generate MCP App widgets — self-contained HTML using the MCP Apps protocol. Loads dependencies from CDN, no build step.",
+      "skills": ["generate-mcp-app-ui", "report-issue"],
+      "agents": [],
+      "mcp_servers": [],
+      "hooks": "(none)",
+      "downstream_target": "MCP Apps host (Claude, ChatGPT, VS Code, Microsoft 365 Copilot) — host loads the HTML directly",
+      "auth": "(none)"
+    },
+    {
+      "part_id": "canvas-apps",
+      "marketplace_name": "canvas-apps",
+      "source_dir": "plugins/canvas-apps",
+      "version": "2.1.0",
+      "project_type": "library",
+      "description": "Author Power Apps Canvas Apps via the Canvas Authoring MCP server. Generates .pa.yaml files in coordination with a live coauthoring session.",
+      "skills": ["canvas-app", "configure-canvas-mcp", "add-data-source", "generate-canvas-app", "report-issue"],
+      "agents": ["canvas-app-planner", "canvas-screen-builder"],
+      "mcp_servers": ["canvas-authoring"],
+      "hooks": "(none)",
+      "downstream_target": "Canvas App (compile_canvas + sync_canvas against live coauthoring session)",
+      "auth": "Inherits browser coauthoring session — requires Power Apps Studio tab to stay open",
+      "prerequisites": [".NET 10 SDK"]
+    },
+    {
+      "part_id": "code-apps-preview",
+      "marketplace_name": "code-apps-preview",
+      "source_dir": "plugins/code-apps",
+      "version": "1.0.0",
+      "project_type": "library",
+      "description": "Build and deploy Power Apps code apps using React + Vite + TypeScript with Power Platform connectors. Sandboxed runtime — all data access must go through connectors.",
+      "skills": [
+        "create-code-app", "deploy", "list-connections", "add-datasource", "add-connector",
+        "add-dataverse", "add-sharepoint", "add-azuredevops", "add-teams", "add-excel",
+        "add-onedrive", "add-office365", "add-mcscopilot", "report-issue"
+      ],
+      "agents": ["code-app-architect"],
+      "mcp_servers": [],
+      "hooks": "(none)",
+      "downstream_target": "Power Apps code app (deployed via `npx power-apps push`)",
+      "auth": "pac auth (reused by `npx power-apps`)",
+      "notes": "Marketplace name differs from source dir: `code-apps-preview` ↔ `plugins/code-apps`. Preserve this mapping."
+    }
+  ],
+  "proposed_parts": [
+    {
+      "part_id": "power-automate",
+      "source_dir": "plugins/power-automate",
+      "status": "proposal-only",
+      "notes": "PROPOSAL.md only — not registered in marketplace.json. Planned authoring surface: Dataverse Web API (/workflows). Packaging: pac solution clone/pack."
+    }
+  ],
+  "integration_points": [
+    {
+      "from": "marketplace.json",
+      "to": "plugins/*/.claude-plugin/plugin.json",
+      "type": "directory-reference",
+      "details": "marketplace.json plugins[].source field points to ./plugins/<plugin>"
+    },
+    {
+      "from": "shared/skills/<skill>/<workflow>.md",
+      "to": "plugins/*/skills/<skill>/SKILL.md",
+      "type": "thin-wrapper-reference",
+      "details": "Per-plugin SKILL.md contains frontmatter + one-line reference back to the shared workflow file"
+    },
+    {
+      "from": "plugins/<plugin>/skills/<skill>/SKILL.md",
+      "to": "plugins/<plugin>/agents/<agent>.md",
+      "type": "Task-tool-invocation",
+      "details": "Skills delegate specialized work to sub-agents via the Task tool"
+    },
+    {
+      "from": "plugins/<plugin>/.mcp.json",
+      "to": "External MCP servers",
+      "type": "mcp-server-registration",
+      "details": "Auto-mounted when plugin enabled; tools surfaced as mcp__<server>__<tool>"
+    },
+    {
+      "from": "plugins/power-pages/hooks/hooks.json",
+      "to": "plugins/power-pages/scripts/lib/powerpages-hook-utils.js",
+      "type": "PostToolUse-dispatcher",
+      "details": "Skill matcher → run-skill-posttool-validation.js → skill name → validator script"
+    },
+    {
+      "from": "All plugins",
+      "to": "Power Platform Dataverse / admin APIs",
+      "type": "REST",
+      "details": "Authenticated via az login → getAuthToken (power-pages) or pac auth (other plugins)"
+    }
+  ]
+}
